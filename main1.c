@@ -1,8 +1,8 @@
 /*
- * Diaplay.c
+ * Display.c
  *
  * Created: 30/06/2021 13:54:53
- * Author : Matias Ordoñez
+ * Author : Matias Ordoï¿½ez
  */ 
 #define F_CPU 4000000UL
 #include <avr/io.h>
@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include <math.h>
-
+#include <xc.h>
 
 double presion_atmosferica = 1013.25;
 int sensor = 0;
@@ -22,14 +22,49 @@ double presion_final;
 double altura;
 
 
+void GPIO_Configuracion()
+{
+    DDRB = 0xFF;                 
+    DDRC = 0b00000011;
+	DDRD = 0b00000000;
+	PORTD = 0b00000000;
 
+}
+void ADC_Configuracion()
+{
+	ADMUX = (1<<REFS0);
+	ADCSRA = (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
+}
 
+unsigned int ADC_Lectura(int canal){
+    if(canal < 0 || canal > 7){
+        return 1;
+    }
+    canal &= 0x7;
+    ADMUX = (ADMUX & 0xF8)|canal;
+    ADCSRA |= (1<<ADSC);
+    while(ADCSRA & (1<<ADSC)); 
+    return (ADC);
+}
 
 int main(void)
 {
-	DDRD = 0x00000000;
-	PORTD = 0x00000000;
 	
+	unsigned int valor_lectura;
+  unsigned int canal_elegido = 5;
+  GPIO_Configuracion();                   
+  ADC_Configuracion();                   
+
+  do
+  {
+    valor_lectura = ADC_Lectura(canal_elegido);            
+    PORTB = valor_lectura;
+    PORTC = valor_lectura >> 8;
+    _delay_ms(1000);
+    canal_elegido = (canal_elegido >=4) ? 2 : (1 + canal_elegido);
+  }
+  while(1);
+  return 0;
 	adc_referencia(1);
 	
 	
