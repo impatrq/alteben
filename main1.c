@@ -41,7 +41,8 @@ unsigned int ADC_Lectura(int canal){
 
 int main(void)
 {
-	
+	int ADC_val;
+	int canal_seleccionado = 0;
 	ADC_Configuracion();
 	
 	
@@ -51,20 +52,19 @@ int main(void)
 	PORTC = 0b00000001;
 	
 	
-	adc_referencia(1);
 	
 	
-	adc_iniciar();
 	
 	
     lcd_init(LCD_DISP_ON);
 	lcd_clrscr();
     while (1) 
     {
-		adc_canal(0);
+		ADC_val = ADC_Lectura(canal_seleccionado);
+		PORTC = ADC_val;
 		int aux=0;
 		for(int i=0;i<10;i++){
-			aux=aux + (PINC0 * 5.0/1023.0);
+			aux=aux + (canal_seleccionado * 5.0/1023.0);
 			_delay_ms(5);
 		}
 		Vout=aux/10.0;
@@ -74,7 +74,7 @@ int main(void)
 		
 		altura = -7999*log(presion_final);
 		
-		sensor = adc_start();
+		
 		
 	
 		lcd_gotoxy(0,0);
