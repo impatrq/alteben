@@ -7,7 +7,6 @@
 #define F_CPU 4000000UL
 #include <avr/io.h>
 #include "lcd.h"
-#include "adc_atmega_328.h"
 #include <stdlib.h>
 #include <util/delay.h>
 #include <math.h>
