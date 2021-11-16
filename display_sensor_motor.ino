@@ -1,21 +1,23 @@
 /***************************************************************************
                                     ALTEBEN
  ***************************************************************************/
-// include the library code:
+
 #include <LiquidCrystal.h>
 #include <Stepper.h>
-// Define stepper motor connections and steps per revolution:
-#define dirPin 8 //dir
-#define stepPin 9 //step
-#define stepsPerRevolution 200
-
+#define dirPin 6 //dir
+#define stepPin 7 //step
+#define stepsPerRevolution 600
+#define M0Pin 8
+#define M1Pin 9
+#define M2Pin 10
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(13, 12, 5, 4, 3, 2);
 
 
 double P_atmosferica=101.3;  
-double Vout,Vs=5.0;
+double Vout;
+double Vs=5.0;
 double Altura;
 double P;
 double aux;
@@ -34,11 +36,11 @@ void setup()
   delay(3000);
   lcd.clear();
 
-
-   // Declare pins as output:
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
-
+  pinMode(M0Pin, OUTPUT);
+  pinMode(M1Pin, OUTPUT);
+  pinMode(M2Pin, OUTPUT);
 
   
 }
@@ -54,6 +56,7 @@ void loop()
   
   //Presión en Kpa según Datasheet MPX5100
   P = ( Vout - 0.04*Vs ) / (0.09 * Vs) + tolP; //kPa
+  //P = Vout/Vs/0.009 - 0.04;
   //Calculo de la Presion Absoluta
   P_final = P_atmosferica - P;
   Altura = (-7999.6527*log(P_final/P_atmosferica))*3.28;  //Altura de la aeronave
@@ -80,12 +83,14 @@ void loop()
 
   delay(3000);
 
-   // Set the spinning direction clockwise:
+  digitalWrite(M0Pin,LOW);
+  digitalWrite(M1Pin,LOW);
+  digitalWrite(M2Pin,LOW);
+  
+
   digitalWrite(dirPin, HIGH);
 
-  // Spin the stepper motor 1 revolution slowly:
   for (int i = 0; i < stepsPerRevolution; i++) {
-    // These four lines result in 1 step:
     digitalWrite(stepPin, HIGH);
     delayMicroseconds(2000);
     digitalWrite(stepPin, LOW);
@@ -94,12 +99,11 @@ void loop()
 
   delay(1000);
 
-  // Set the spinning direction counterclockwise:
+  
   digitalWrite(dirPin, LOW);
 
-  // Spin the stepper motor 1 revolution quickly:
+ 
   for (int i = 0; i < stepsPerRevolution; i++) {
-    // These four lines result in 1 step:
     digitalWrite(stepPin, HIGH);
     delayMicroseconds(2000);
     digitalWrite(stepPin, LOW);
@@ -107,4 +111,5 @@ void loop()
   }
 
   delay(1000);
+  
 }
