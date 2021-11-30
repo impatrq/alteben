@@ -22,7 +22,6 @@ double altura;
 char alturaF[8];
 char presion_finalF[8];
 
-
 //---------------------------------------------------------------PROGRAMA-----------------------------------------------------------------------
 
 //Configuracion del ADC
@@ -59,11 +58,12 @@ int main(void)
 	PORTC = 0b00000001;
 	
 	
+	
+	
+	
 	//iniciamos LCD
-
     LCD_Init();
 	
-
     while (1) 
     {
 		//Seleccion del canal
@@ -80,22 +80,22 @@ int main(void)
 		presion_sensor= Vout/Vs/0.009 - 0.04;
 		presion_final= presion_atmosferica - presion_sensor;
 		//Definicion de altura
-		altura = -7999*log(presion_final);
-		
-
-		
+		altura = (-7999.6527*log(presion_final/101.304))*3.28;
+		//Pasaje de Float a String
+		sprintf(presion_finalF, "%0.2f", presion_final);
+		sprintf(alturaF, "%0.2f", altura);
 		//Muestreo de valores en LCD
 		
 		LCD_Clear();
 		LCD_WriteString("Presion= ");
 		LCD_WriteFloat(presion_final);
 		LCD_WriteString("kPa");
-		/*
+		
 		LCD_Set_Cursor(0, 1);
 		LCD_WriteString("Altura= ");
 		LCD_WriteFloat(altura);
-		*/
+		
 		_delay_ms(500);
-
     }
 }
+
