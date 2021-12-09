@@ -5,7 +5,7 @@
 
   <h4 align="center">Altimeter Tester Bench</h4>
 
-## Sobre el Proyecto
+## Sobre ALTEBEN
 
 **ALTEBEN** es un banco de prueba para altimetros de las distintas aeronaves, enfocado principalmente al ambito educativo. Con **ALTEBEN** buscamos facilitar la enseñanza del funcionamiento de un altimetro y su calibración.
 Su funcionamiento se basa, por un lado de un altimetro digital realizado en lenguaje C y por el otro, el circuito neumatico donde una bomba genera vacio, simulando una altura.
@@ -30,7 +30,7 @@ Manual de Usuario de *ALTEBEN*
 
 E-Mail equipo **ALTEBEN** - alteben2021@gmail.com
 
-Link del Proyecto: [github.com/impatrq/alteben](https://github.com/impatrq/alteben)
+Link de ALTEBEN: [github.com/impatrq/alteben](https://github.com/impatrq/alteben)
 
 ## Integrantes
 
